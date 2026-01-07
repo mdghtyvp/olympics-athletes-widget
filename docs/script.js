@@ -43,8 +43,10 @@ loadData();
 setInterval(loadData, 60000);
 
 
-function render(data) {
+function render(data) {  container.innerHTML = '';
   const container = document.getElementById('widget');
+
+
 
   data.athletes.forEach(athlete => {
     const el = document.createElement('div');
