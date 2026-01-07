@@ -153,8 +153,19 @@ function classifyEvents(events = []) {
 
 function formatDate(iso) {
   if (!iso) return '';
-  return new Date(iso).toLocaleString();
+
+  const date = new Date(iso);
+
+  return date.toLocaleString('en-US', {
+    timeZone: 'America/New_York',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  }) + ' ET';
 }
+
 
 // ===============================
 // KICKOFF (MUST BE LAST)
