@@ -61,27 +61,58 @@ function loadData() {
 function render(data) {
   container.innerHTML = '';
 
+  // 1. Create / get the grid
+  const grid = document.createElement('div');
+  grid.className = 'athletes-grid';
+
   data.athletes.forEach(athlete => {
+    // 2. Sort events chronologically (ISO datetime)
+    const eventsSorted = athlete.events
+      .filter(e => e.event_datetime_iso)
+      .sort((a, b) => {
+        return new Date(a.event_datetime_iso) - new Date(b.event_datetime_iso);
+      });
+
+    // 3. Check for any medal (for icon + card styling)
+    const medalEvent = eventsSorted.find(e => e.medal);
+    const hasMedal = Boolean(medalEvent);
+
+    // 4. Create card
     const el = document.createElement('div');
-    el.className = 'athlete';
+    el.className = 'athlete-card';
+    if (hasMedal) el.classList.add('has-medal');
 
     el.innerHTML = `
       <div class="athlete-header">
         <img src="${athlete.headshot}" alt="${athlete.name}" />
-        <div>
-          <strong>${athlete.name}</strong><br />
-          ${athlete.sport}, age ${athlete.age}<br />
-          <em>${athlete.vtConnection}</em>
+
+        <div class="athlete-text">
+          <h2 class="athlete-name">
+            <span class="name-text">${athlete.name}</span>
+            ${
+              hasMedal
+                ? `<img class="medal-icon" src="icons/medal-${medalEvent.medal}.svg" alt="${medalEvent.medal} medal" />`
+                : ''
+            }
+          </h2>
+
+          <div class="athlete-sport">
+            ${athlete.sport}, age ${athlete.age}
+          </div>
+
+          <div class="athlete-connection">
+            ${athlete.vtConnection}
+          </div>
         </div>
       </div>
+
       <div class="events">
-        ${renderEvents(classifyEvents(athlete.events))}
+        ${renderEvents(eventsSorted)}
       </div>
     `;
 
-    container.appendChild(el);
-  });
-}
+    grid.app
+
 
 function renderEvents(events = []) {
   if (!events.length) return '';
