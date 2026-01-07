@@ -55,7 +55,7 @@ function renderEvents(events = []) {
         <small>${formatDate(event.datetime)}</small>
         ${event.result ? `<div>Result: ${event.result}</div>` : ''}
       </div>
-      ${event.medal ? `<div class="medal">${event.medal.toUpperCase()}</div>` : ''}
+        ${event.medal ? renderMedal(event.medal) : ''}
     </div>
   `).join('');
 }
@@ -63,4 +63,19 @@ function renderEvents(events = []) {
 function formatDate(iso) {
   if (!iso) return '';
   return new Date(iso).toLocaleString();
+}
+
+
+function renderMedal(medal) {
+  const label = medal.charAt(0).toUpperCase() + medal.slice(1);
+
+  return `
+    <div class="medal-wrapper" aria-label="${label} medal">
+      <img
+        src="icons/medal-${medal}.svg"
+        alt="${label} medal"
+        class="medal-icon"
+      />
+    </div>
+  `;
 }
