@@ -48,18 +48,39 @@ function render(data) {
 function renderEvents(events = []) {
   if (!events.length) return '';
 
-return events.map(event => `
-  <div class="event ${event.completed ? 'completed' : 'upcoming'}">
+  const upcoming = events.filter(e => !e.completed);
+  const completed = events.filter(e => e.completed);
 
+  let html = '';
+
+  if (upcoming.length) {
+    html += `<div class="event-group"><strong>Upcoming</strong>`;
+    html += upcoming.map(renderEvent).join('');
+    html += `</div>`;
+  }
+
+  if (completed.length) {
+    html += `<div class="event-group"><strong>Results</strong>`;
+    html += completed.map(renderEvent).join('');
+    html += `</div>`;
+  }
+
+  return html;
+}
+
+function renderEvent(event) {
+  return `
+    <div class="event ${event.completed ? 'completed' : 'upcoming'}">
       <div>
         ${event.label}<br />
         <small>${formatDate(event.datetime)}</small>
         ${event.result ? `<div>Result: ${event.result}</div>` : ''}
       </div>
-        ${event.medal ? renderMedal(event.medal) : ''}
+      ${event.medal ? renderMedal(event.medal) : ''}
     </div>
-  `).join('');
+  `;
 }
+
 
 function formatDate(iso) {
   if (!iso) return '';
