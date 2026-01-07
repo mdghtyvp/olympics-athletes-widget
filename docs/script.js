@@ -1,17 +1,39 @@
-const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzOsQZUMGopOGwtrR_o5hJzBinhIfOgcOpwxo7dtOMB0M8QQcDiBbKm-_fHaOAQegeQUw/exec';
 
+const container = document.getElementById('widget');
+
+function showState(message, type = '') {
+  container.innerHTML = `
+    <div class="state ${type}">${message}</div>
+  `;
+}
+
+
+const ENDPOINT = 'https://script.google.com/macros/s/XXXXX/exec';
 let currentVersion = null;
 
 function loadData() {
+  showState('Loading athlete results…');
+
   fetch(`${ENDPOINT}?t=${Date.now()}`)
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    })
     .then(data => {
+      if (!data.athletes || !data.athletes.length) {
+        showState('No athlete data available.', 'empty');
+        return;
+      }
+
       if (data.version !== currentVersion) {
         currentVersion = data.version;
         render(data);
       }
     })
-    .catch(console.error);
+    .catch(err => {
+      console.error(err);
+      showState('Results are temporarily unavailable.', 'error');
+    });
 }
 
 // Initial load
@@ -19,6 +41,7 @@ loadData();
 
 // Poll every 60 seconds
 setInterval(loadData, 60000);
+
 
 function render(data) {
   const container = document.getElementById('widget');
