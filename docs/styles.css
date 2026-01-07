@@ -1,0 +1,36 @@
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 12px;
+}
+
+.athlete {
+  border-bottom: 1px solid #ddd;
+  padding: 12px 0;
+}
+
+.athlete-header {
+  display: flex;
+  gap: 12px;
+}
+
+.athlete img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.events {
+  margin-top: 8px;
+}
+
+.event {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.medal {
+  font-weight: bold;
+}
