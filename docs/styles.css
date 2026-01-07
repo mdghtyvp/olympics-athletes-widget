@@ -26,10 +26,30 @@ body {
 }
 
 .event {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 4px;
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(0,0,0,0.06);
 }
+
+.event-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+
+.event-medal {
+  font-weight: 600;
+  color: #00807f;
+  margin-left: 4px;
+}
+
+.event-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 0.7rem;
+  color: #666;
+}
+
 
 .medal {
   font-weight: bold;
