@@ -1,13 +1,24 @@
 const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzOsQZUMGopOGwtrR_o5hJzBinhIfOgcOpwxo7dtOMB0M8QQcDiBbKm-_fHaOAQegeQUw/exec';
 
-fetch(ENDPOINT)
-  .then(res => res.json())
-  .then(data => render(data))
-  .catch(err => {
-    document.getElementById('widget').innerText =
-      'Unable to load athlete data.';
-    console.error(err);
-  });
+let currentVersion = null;
+
+function loadData() {
+  fetch(`${ENDPOINT}?t=${Date.now()}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.version !== currentVersion) {
+        currentVersion = data.version;
+        render(data);
+      }
+    })
+    .catch(console.error);
+}
+
+// Initial load
+loadData();
+
+// Poll every 60 seconds
+setInterval(loadData, 60000);
 
 function render(data) {
   const container = document.getElementById('widget');
