@@ -61,23 +61,19 @@ function loadData() {
 function render(data) {
   container.innerHTML = '';
 
-  // 1. Create / get the grid
   const grid = document.createElement('div');
   grid.className = 'athletes-grid';
 
   data.athletes.forEach(athlete => {
-    // 2. Sort events chronologically (ISO datetime)
-    const eventsSorted = athlete.events
+    const eventsSorted = (athlete.events || [])
       .filter(e => e.event_datetime_iso)
       .sort((a, b) => {
         return new Date(a.event_datetime_iso) - new Date(b.event_datetime_iso);
       });
 
-    // 3. Check for any medal (for icon + card styling)
     const medalEvent = eventsSorted.find(e => e.medal);
     const hasMedal = Boolean(medalEvent);
 
-    // 4. Create card
     const el = document.createElement('div');
     el.className = 'athlete-card';
     if (hasMedal) el.classList.add('has-medal');
@@ -89,10 +85,9 @@ function render(data) {
         <div class="athlete-text">
           <h2 class="athlete-name">
             <span class="name-text">${athlete.name}</span>
-            ${
-              hasMedal
-                ? `<img class="medal-icon" src="icons/medal-${medalEvent.medal}.svg" alt="${medalEvent.medal} medal" />`
-                : ''
+            ${hasMedal
+              ? `<img class="medal-icon" src="icons/medal-${medalEvent.medal}.svg" alt="${medalEvent.medal} medal" />`
+              : ''
             }
           </h2>
 
@@ -111,7 +106,11 @@ function render(data) {
       </div>
     `;
 
-    grid.app
+    grid.appendChild(el);
+  });
+
+  container.appendChild(grid);
+}
 
 
 function renderEvents(events = []) {
