@@ -77,3 +77,20 @@ body {
   font-style: italic;
 }
 
+
+.athletes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+
+@media (max-width: 640px) {
+  .athletes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
