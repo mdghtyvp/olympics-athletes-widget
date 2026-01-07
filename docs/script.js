@@ -1,3 +1,4 @@
+let hasRendered = false;
 
 const container = document.getElementById('widget');
 
@@ -12,7 +13,10 @@ const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzOsQZUMGopOGwtrR_o5hJ
 let currentVersion = null;
 
 function loadData() {
-  showState('Loading athlete results…');
+  // Only show loading if we have never rendered successfully
+  if (!hasRendered) {
+    showState('Loading athlete results…');
+  }
 
   fetch(`${ENDPOINT}?t=${Date.now()}`)
     .then(res => {
@@ -21,20 +25,28 @@ function loadData() {
     })
     .then(data => {
       if (!data.athletes || !data.athletes.length) {
-        showState('No athlete data available.', 'empty');
+        if (!hasRendered) {
+          showState('No athlete data available.', 'empty');
+        }
         return;
       }
 
       if (data.version !== currentVersion) {
         currentVersion = data.version;
         render(data);
+        hasRendered = true;
       }
     })
     .catch(err => {
       console.error(err);
-      showState('Results are temporarily unavailable.', 'error');
+
+      // Only show error if we've never rendered valid data
+      if (!hasRendered) {
+        showState('Results are temporarily unavailable.', 'error');
+      }
     });
 }
+
 
 // Initial load
 loadData();
@@ -44,6 +56,8 @@ setInterval(loadData, 60000);
 
 
 function render(data) {  container.innerHTML = '';
+                       hasRendered = true;
+
   const container = document.getElementById('widget');
 
 
