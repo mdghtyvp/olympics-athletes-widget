@@ -1,6 +1,8 @@
+const container = document.getElementById('widget');
+let currentVersion = null;
 let hasRendered = false;
 
-const container = document.getElementById('widget');
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzOsQZUMGopOGwtrR_o5hJzBinhIfOgcOpwxo7dtOMB0M8QQcDiBbKm-_fHaOAQegeQUw/exec';
 
 function showState(message, type = '') {
   container.innerHTML = `
@@ -9,8 +11,6 @@ function showState(message, type = '') {
 }
 
 
-const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzOsQZUMGopOGwtrR_o5hJzBinhIfOgcOpwxo7dtOMB0M8QQcDiBbKm-_fHaOAQegeQUw/exec';
-let currentVersion = null;
 
 function loadData() {
   // Only show loading if we have never rendered successfully
