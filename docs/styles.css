@@ -34,3 +34,17 @@ body {
 .medal {
   font-weight: bold;
 }
+
+
+.medal-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.medal-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
