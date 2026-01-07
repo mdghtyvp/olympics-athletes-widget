@@ -37,7 +37,7 @@ function render(data) {
         </div>
       </div>
       <div class="events">
-        ${renderEvents(athlete.events)}
+          ${renderEvents(classifyEvents(athlete.events))}
       </div>
     `;
 
@@ -78,4 +78,27 @@ function renderMedal(medal) {
       />
     </div>
   `;
+}
+
+
+function classifyEvents(events = []) {
+  const now = new Date();
+
+  return events
+    .map(event => {
+      const completed = Boolean(event.result || event.medal);
+      return { ...event, completed };
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.datetime);
+      const dateB = new Date(b.datetime);
+
+      // Upcoming events first
+      if (a.completed !== b.completed) {
+        return a.completed ? 1 : -1;
+      }
+
+      // Then chronological
+      return dateA - dateB;
+    });
 }
