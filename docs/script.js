@@ -48,8 +48,9 @@ function render(data) {
 function renderEvents(events = []) {
   if (!events.length) return '';
 
-  return events.map(event => `
-    <div class="event">
+return events.map(event => `
+  <div class="event ${event.completed ? 'completed' : 'upcoming'}">
+
       <div>
         ${event.label}<br />
         <small>${formatDate(event.datetime)}</small>
