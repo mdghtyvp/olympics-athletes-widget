@@ -114,27 +114,29 @@ function render(data) {
 
 
 function renderEvents(events = []) {
-  if (!events.length) return '';
+  if (!events || !events.length) return '';
 
-  const upcoming = events.filter(e => !e.completed);
-  const completed = events.filter(e => e.completed);
+  // Sort chronologically just in case
+  events.sort((a, b) => new Date(a.event_datetime_iso) - new Date(b.event_datetime_iso));
 
-  let html = '';
+  return events.map(event => {
+    const medalText = event.medal ? `(${event.medal})` : '';
 
-  if (upcoming.length) {
-    html += `<div class="event-group"><strong>Upcoming</strong>`;
-    html += upcoming.map(renderEvent).join('');
-    html += `</div>`;
-  }
-
-  if (completed.length) {
-    html += `<div class="event-group"><strong>Results</strong>`;
-    html += completed.map(renderEvent).join('');
-    html += `</div>`;
-  }
-
-  return html;
+    return `
+      <div class="event">
+        <div class="event-name">
+          ${event.label || ''}
+          ${medalText ? `<span class="event-medal">${medalText}</span>` : ''}
+        </div>
+        <div class="event-meta">
+          ${event.datetime ? `<span class="event-time">${formatDate(event.datetime)}</span>` : ''}
+          ${event.result ? `<span class="event-result">${event.result}</span>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
 }
+
 
 function renderEvent(event) {
   return `
