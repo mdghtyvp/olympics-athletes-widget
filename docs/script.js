@@ -1,8 +1,16 @@
+// ===============================
+// TOP-LEVEL CONSTANTS (MUST BE FIRST)
+// ===============================
+
 const container = document.getElementById('widget');
+const ENDPOINT = 'https://script.google.com/macros/s/XXXXX/exec';
+
 let currentVersion = null;
 let hasRendered = false;
 
-const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzOsQZUMGopOGwtrR_o5hJzBinhIfOgcOpwxo7dtOMB0M8QQcDiBbKm-_fHaOAQegeQUw/exec';
+// ===============================
+// STATE HANDLING
+// ===============================
 
 function showState(message, type = '') {
   container.innerHTML = `
@@ -10,10 +18,11 @@ function showState(message, type = '') {
   `;
 }
 
-
+// ===============================
+// DATA LOADING
+// ===============================
 
 function loadData() {
-  // Only show loading if we have never rendered successfully
   if (!hasRendered) {
     showState('Loading athlete results…');
   }
@@ -39,28 +48,18 @@ function loadData() {
     })
     .catch(err => {
       console.error(err);
-
-      // Only show error if we've never rendered valid data
       if (!hasRendered) {
         showState('Results are temporarily unavailable.', 'error');
       }
     });
 }
 
+// ===============================
+// RENDERING
+// ===============================
 
-// Initial load
-loadData();
-
-// Poll every 60 seconds
-setInterval(loadData, 60000);
-
-
-function render(data) {  container.innerHTML = '';
-                       hasRendered = true;
-
-  const container = document.getElementById('widget');
-
-
+function render(data) {
+  container.innerHTML = '';
 
   data.athletes.forEach(athlete => {
     const el = document.createElement('div');
@@ -76,7 +75,7 @@ function render(data) {  container.innerHTML = '';
         </div>
       </div>
       <div class="events">
-          ${renderEvents(classifyEvents(athlete.events))}
+        ${renderEvents(classifyEvents(athlete.events))}
       </div>
     `;
 
@@ -120,13 +119,6 @@ function renderEvent(event) {
   `;
 }
 
-
-function formatDate(iso) {
-  if (!iso) return '';
-  return new Date(iso).toLocaleString();
-}
-
-
 function renderMedal(medal) {
   const label = medal.charAt(0).toUpperCase() + medal.slice(1);
 
@@ -141,25 +133,32 @@ function renderMedal(medal) {
   `;
 }
 
+// ===============================
+// UTILITIES
+// ===============================
 
 function classifyEvents(events = []) {
-  const now = new Date();
-
   return events
-    .map(event => {
-      const completed = Boolean(event.result || event.medal);
-      return { ...event, completed };
-    })
+    .map(event => ({
+      ...event,
+      completed: Boolean(event.result || event.medal)
+    }))
     .sort((a, b) => {
-      const dateA = new Date(a.datetime);
-      const dateB = new Date(b.datetime);
-
-      // Upcoming events first
       if (a.completed !== b.completed) {
         return a.completed ? 1 : -1;
       }
-
-      // Then chronological
-      return dateA - dateB;
+      return new Date(a.datetime) - new Date(b.datetime);
     });
 }
+
+function formatDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleString();
+}
+
+// ===============================
+// KICKOFF (MUST BE LAST)
+// ===============================
+
+loadData();
+setInterval(loadData, 60000);
