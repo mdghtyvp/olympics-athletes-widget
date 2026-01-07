@@ -9,10 +9,6 @@ body {
   padding: 12px 0;
 }
 
-.athlete-header {
-  display: flex;
-  gap: 12px;
-}
 
 .athlete img {
   width: 64px;
@@ -75,5 +71,93 @@ body {
 
 .state.empty {
   font-style: italic;
+}
+
+
+.athletes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .athletes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.athlete-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.athlete-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.athlete-header img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.athlete-name {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.medal-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.athlete-sport {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-top: 2px;
+}
+
+.athlete-connection {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.event {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.event-name {
+  font-weight: 500;
+}
+
+.event-time,
+.event-result {
+  font-weight: 400;
+  color: #666;
+  font-size: 0.7rem;
+}
+
+.athlete-card.has-medal {
+  border-color: #00807f;
+  background-color: #c5ffec;
 }
 
