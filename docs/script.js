@@ -3,7 +3,7 @@
 // ===============================
 
 const container = document.getElementById('widget');
-const ENDPOINT = 'https://script.google.com/macros/s/XXXXX/exec';
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzOsQZUMGopOGwtrR_o5hJzBinhIfOgcOpwxo7dtOMB0M8QQcDiBbKm-_fHaOAQegeQUw/exec';
 
 let currentVersion = null;
 let hasRendered = false;
