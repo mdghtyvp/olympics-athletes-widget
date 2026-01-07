@@ -48,3 +48,12 @@ body {
   gap: 4px;
 }
 
+
+.event.completed {
+  opacity: 0.8;
+}
+
+.event.upcoming {
+  font-weight: 500;
+}
+
