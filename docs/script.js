@@ -59,52 +59,80 @@ function loadData() {
 // ===============================
 
 function render(data) {
-  container.innerHTML = '';
+  const container = document.getElementById('widget');
+  container.innerHTML = ''; // clear previous content
 
+  // Create the responsive grid wrapper
+  const grid = document.createElement('div');
+  grid.className = 'athletes-grid';
+
+  // Loop through athletes
   data.athletes.forEach(athlete => {
-    const el = document.createElement('div');
-    el.className = 'athlete';
+    // Sort events chronologically (ISO datetime assumed)
+    const eventsSorted = (athlete.events || [])
+      .filter(e => e.event_datetime_iso)
+      .sort((a, b) => new Date(a.event_datetime_iso) - new Date(b.event_datetime_iso));
 
-    el.innerHTML = `
+    // Determine if athlete has any medal
+    const medalEvent = eventsSorted.find(e => e.medal);
+    const hasMedal = Boolean(medalEvent);
+
+    // Create athlete card
+    const card = document.createElement('div');
+    card.className = 'athlete-card';
+    if (hasMedal) card.classList.add('has-medal');
+
+    // Optional medal icon HTML
+    const medalIconHTML = hasMedal
+      ? `<img class="medal-icon" src="icons/medal-${medalEvent.medal}.svg" alt="${medalEvent.medal} medal" />`
+      : '';
+
+    // Card inner HTML
+    card.innerHTML = `
       <div class="athlete-header">
         <img src="${athlete.headshot}" alt="${athlete.name}" />
-        <div>
-          <strong>${athlete.name}</strong><br />
-          ${athlete.sport}, age ${athlete.age}<br />
-          <em>${athlete.vtConnection}</em>
+        <div class="athlete-text">
+          <h2 class="athlete-name">
+            <span class="name-text">${athlete.name}</span>
+            ${medalIconHTML}
+          </h2>
+          <div class="athlete-sport">${athlete.sport}, age ${athlete.age}</div>
+          <div class="athlete-connection">${athlete.vtConnection}</div>
         </div>
       </div>
+
       <div class="events">
-        ${renderEvents(classifyEvents(athlete.events))}
+        ${renderEvents(eventsSorted)}
       </div>
     `;
 
-    container.appendChild(el);
+    // Append card to grid
+    grid.appendChild(card);
   });
+
+  // Attach the grid to container
+  container.appendChild(grid);
 }
+
 
 function renderEvents(events = []) {
   if (!events.length) return '';
 
-  const upcoming = events.filter(e => !e.completed);
-  const completed = events.filter(e => e.completed);
-
-  let html = '';
-
-  if (upcoming.length) {
-    html += `<div class="event-group"><strong>Upcoming</strong>`;
-    html += upcoming.map(renderEvent).join('');
-    html += `</div>`;
-  }
-
-  if (completed.length) {
-    html += `<div class="event-group"><strong>Results</strong>`;
-    html += completed.map(renderEvent).join('');
-    html += `</div>`;
-  }
-
-  return html;
+  return events
+    .sort((a, b) => new Date(a.event_datetime_iso) - new Date(b.event_datetime_iso))
+    .map(event => {
+      const medalText = event.medal ? `(${event.medal})` : '';
+      return `
+        <div class="event">
+          <div class="event-name">${event.label} ${medalText}</div>
+          ${event.datetime ? `<div class="event-time">${formatDate(event.datetime)}</div>` : ''}
+          ${event.result ? `<div class="event-result">${event.result}</div>` : ''}
+        </div>
+      `;
+    })
+    .join('');
 }
+
 
 function renderEvent(event) {
   return `
