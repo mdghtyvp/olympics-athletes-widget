@@ -68,10 +68,10 @@ function render(data) {
     el.innerHTML = `
       <div class="athlete-header">
         <img src="${athlete.headshot}" alt="${athlete.name}" />
-        <div>
-          <strong>${athlete.name}</strong><br />
-          ${athlete.sport}, age ${athlete.age}<br />
-          <em>${athlete.vtConnection}</em>
+        <div class="athlete-info">
+          <h2 class="athlete-name">${athlete.name} <span class="athlete-age">(${athlete.age})</span></h2>
+          <div class="athlete-sport">${athlete.sport}</div>
+          <p class="athlete-connection">${athlete.vtConnection}</p>
         </div>
       </div>
       <div class="events">
@@ -92,13 +92,13 @@ function renderEvents(events = []) {
   let html = '';
 
   if (upcoming.length) {
-    html += `<div class="event-group"><strong>Upcoming</strong>`;
+    html += `<div class="event-group"><h3 class="event-group-header">Upcoming</h3>`;
     html += upcoming.map(renderEvent).join('');
     html += `</div>`;
   }
 
   if (completed.length) {
-    html += `<div class="event-group"><strong>Results</strong>`;
+    html += `<div class="event-group"><h3 class="event-group-header">Results</h3>`;
     html += completed.map(renderEvent).join('');
     html += `</div>`;
   }
@@ -107,12 +107,14 @@ function renderEvents(events = []) {
 }
 
 function renderEvent(event) {
+  const medalClass = event.medal ? 'has-medal' : '';
+  const medalLabel = event.medal ? ` (${event.medal.charAt(0).toUpperCase() + event.medal.slice(1)})` : '';
+
   return `
-    <div class="event ${event.completed ? 'completed' : 'upcoming'}">
-      <div>
-        ${event.label}<br />
-        <small>${formatDate(event.datetime)}</small>
-        ${event.result ? `<div>Result: ${event.result}</div>` : ''}
+    <div class="event ${event.completed ? 'completed' : 'upcoming'} ${medalClass}">
+      <div class="event-label">${event.label}</div>
+      <div class="event-datetime-result">
+        ${event.result ? `${event.result}${medalLabel}` : formatDate(event.datetime)}
       </div>
       ${event.medal ? renderMedal(event.medal) : ''}
     </div>
@@ -123,13 +125,7 @@ function renderMedal(medal) {
   const label = medal.charAt(0).toUpperCase() + medal.slice(1);
 
   return `
-    <div class="medal-wrapper" aria-label="${label} medal">
-      <img
-        src="icons/medal-${medal}.svg"
-        alt="${label} medal"
-        class="medal-icon"
-      />
-    </div>
+    <div class="medal-badge medal-${medal}" aria-label="${label} medal" role="img"></div>
   `;
 }
 
@@ -141,7 +137,7 @@ function classifyEvents(events = []) {
   return events
     .map(event => ({
       ...event,
-      completed: Boolean(event.result || event.medal)
+      completed: Boolean(event.result)
     }))
     .sort((a, b) => {
       if (a.completed !== b.completed) {
