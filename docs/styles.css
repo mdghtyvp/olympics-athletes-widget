@@ -1,102 +1,252 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+/* ===================================
+   CSS VARIABLES & GLOBAL STYLES
+   =================================== */
+
+:root {
+  /* Brand Colors */
+  --color-primary: #C5FFEC;
+  --color-dark-teal: #004C42;
+  --color-medium-teal: #00807F;
+
+  /* Medal Colors */
+  --color-gold: #FFD700;
+  --color-silver: #C0C0C0;
+  --color-bronze: #CD7F32;
+
+  /* Neutral Colors */
+  --color-card-bg: #F5F5F5;
+  --color-text-primary: #333;
+  --color-text-secondary: #666;
+  --color-border: #DDD;
+  --color-white: #FFFFFF;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-xxl: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
 
 body {
   font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-}
-
-
-body {
-  font-family: system-ui, -apple-system, sans-serif;
   margin: 0;
-  padding: 12px;
+  padding: 0;
+  background-color: var(--color-white);
+  color: var(--color-text-primary);
+  line-height: 1.5;
 }
+
+/* ===================================
+   HEADER STYLING
+   =================================== */
+
+.widget-header {
+  background-color: var(--color-primary);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  text-align: center;
+}
+
+.widget-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-dark-teal);
+  letter-spacing: 0.3px;
+}
+
+/* ===================================
+   WIDGET CONTAINER & GRID LAYOUT
+   =================================== */
+
+#widget {
+  padding: var(--spacing-xl);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-xl);
+}
+
+/* ===================================
+   ATHLETE CARD STYLING
+   =================================== */
 
 .athlete {
-  padding: 12px 0;
-  border-bottom: 1px solid #ddd;
+  background-color: var(--color-card-bg);
+  border-radius: 10px;
+  padding: var(--spacing-xl);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
 }
+
+.athlete:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* ===================================
+   ATHLETE HEADER (Name, Photo, Sport)
+   =================================== */
 
 .athlete-header {
   display: flex;
-  gap: 12px;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
 }
 
-.athlete-header strong {
-  font-size: 1rem;
-  font-weight: 600;
+.athlete-info {
+  flex: 1;
 }
 
-.athlete-header em {
-  font-size: 0.75rem;
-  color: #666;
-}
-
-.event small {
-  font-size: 0.7rem;
-  color: #666;
-}
-
-
+/* Headshot Styling */
 .athlete img {
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 50%;
-}
-
-.events {
-  margin-top: 8px;
-}
-
-.event {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
-  align-items: center;
-  padding: 4px 0;
-}
-
-.medal {
-  font-weight: bold;
-}
-
-
-.medal-icon {
-  width: 20px;
-  height: 20px;
+  background-color: rgba(0, 128, 127, 0.15);
   flex-shrink: 0;
 }
 
-.medal-wrapper {
-  display: flex;
+/* Name and Age */
+.athlete-name {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-dark-teal);
+  margin: 0 0 2px 0;
+  line-height: 1.3;
+}
+
+.athlete-age {
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--color-text-secondary);
+}
+
+/* Sport */
+.athlete-sport {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-dark-teal);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 2px 0 6px 0;
+}
+
+/* Vermont Connection */
+.athlete-connection {
+  font-size: 13px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ===================================
+   EVENTS SECTION
+   =================================== */
+
+.events {
+  margin-top: var(--spacing-sm);
+}
+
+.event-group {
+  margin-top: var(--spacing-md);
+}
+
+.event-group:first-child {
+  margin-top: 0;
+}
+
+.event-group-header {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-dark-teal);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 4px 0;
+}
+
+/* Individual Event */
+.event {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 4px;
+  column-gap: var(--spacing-lg);
+  margin-top: 6px;
+  padding: 2px 0;
+  font-size: 14px;
 }
 
-
-.event.completed {
-  opacity: 0.8;
+.event > .medal-badge {
+  justify-self: end;
 }
 
-.event.upcoming {
+.event-label {
+  font-weight: 400;
+  color: var(--color-text-primary);
+}
+
+.event-datetime-result {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.event.upcoming .event-label {
   font-weight: 500;
 }
 
-
-.event-group strong {
-  display: block;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-top: 8px;
-  color: #555;
+.event.completed {
+  opacity: 0.95;
 }
 
+.event.has-medal {
+  font-weight: 500;
+}
+
+.event.has-medal .event-datetime-result {
+  color: var(--color-text-primary);
+}
+
+/* ===================================
+   MEDAL BADGES
+   =================================== */
+
+.medal-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.medal-gold {
+  background-color: var(--color-gold);
+}
+
+.medal-silver {
+  background-color: var(--color-silver);
+}
+
+.medal-bronze {
+  background-color: var(--color-bronze);
+}
+
+/* ===================================
+   STATE MESSAGES (Loading, Error, Empty)
+   =================================== */
 
 .state {
   font-size: 14px;
-  color: #555;
-  padding: 12px 0;
+  color: var(--color-text-secondary);
+  padding: var(--spacing-xxl);
+  text-align: center;
+  grid-column: 1 / -1;
 }
 
 .state.error {
@@ -107,3 +257,77 @@ body {
   font-style: italic;
 }
 
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
+
+@media (max-width: 768px) {
+  #widget {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+
+  .widget-header h1 {
+    font-size: 20px;
+  }
+
+  .athlete {
+    padding: var(--spacing-lg);
+  }
+
+  .athlete img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .athlete-name {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 480px) {
+  .widget-header {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .widget-header h1 {
+    font-size: 18px;
+  }
+
+  #widget {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .athlete {
+    padding: var(--spacing-md);
+  }
+
+  .athlete-header {
+    gap: var(--spacing-sm);
+  }
+
+  .athlete img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .athlete-name {
+    font-size: 16px;
+  }
+
+  .event {
+    gap: var(--spacing-sm);
+    font-size: 13px;
+  }
+
+  .event-datetime-result {
+    font-size: 12px;
+  }
+
+  .medal-badge {
+    width: 24px;
+    height: 24px;
+  }
+}
