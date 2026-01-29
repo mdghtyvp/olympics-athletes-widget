@@ -208,6 +208,10 @@ body {
   font-weight: 600;
 }
 
+.event.has-medal .event-label {
+  font-weight: 600;
+}
+
 .event.has-medal .event-datetime-result {
   color: var(--color-text-primary);
      font-weight: 600;
