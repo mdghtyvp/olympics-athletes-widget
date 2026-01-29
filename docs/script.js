@@ -30,7 +30,7 @@ function showState(message, type = '') {
 
 function loadData() {
   if (!hasRendered) {
-    showState('Loading athlete results…');
+    showState('Loading athletes…');
   }
 
   fetch(`${ENDPOINT}?t=${Date.now()}`)
