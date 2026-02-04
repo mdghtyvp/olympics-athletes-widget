@@ -265,7 +265,7 @@ body {
    RESPONSIVE DESIGN
    =================================== */
 
-@media (max-width: 668px) {
+@media (max-width: 768px) {
   #widget {
     grid-template-columns: 1fr;
     padding: var(--spacing-md);
