@@ -9,7 +9,7 @@ let currentVersion = null;
 let hasRendered = false;
 
 const controlState = {
-  sortMethod: 'event-soonest',
+  sortMethod: 'medal-wins',
   activeSports: new Set(),
   cachedData: null
 };
